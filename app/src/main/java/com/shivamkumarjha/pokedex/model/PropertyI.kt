@@ -2,7 +2,7 @@ package com.shivamkumarjha.pokedex.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Property(
+data class PropertyI(
     @SerializedName("back_default") val back_default: String,
     @SerializedName("back_female") val back_female: String,
     @SerializedName("back_shiny") val back_shiny: String,

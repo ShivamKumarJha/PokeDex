@@ -3,7 +3,7 @@ package com.shivamkumarjha.pokedex.model
 import com.google.gson.annotations.SerializedName
 
 data class GenerationII(
-    @SerializedName("crystal") val crystal: Crystal,
-    @SerializedName("gold") val gold: Gold,
-    @SerializedName("silver") val silver: Silver
+    @SerializedName("crystal") val crystal: PropertyII,
+    @SerializedName("gold") val gold: PropertyII,
+    @SerializedName("silver") val silver: PropertyII
 )
