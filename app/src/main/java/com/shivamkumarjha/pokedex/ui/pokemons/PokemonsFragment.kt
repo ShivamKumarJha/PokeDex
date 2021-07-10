@@ -49,6 +49,14 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
             setHasFixedSize(true)
             adapter = pokemonAdapter
         }
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    viewModel.getPokemons(pokemonAdapter.itemCount)
+                }
+            }
+        })
     }
 
     private fun observer() {

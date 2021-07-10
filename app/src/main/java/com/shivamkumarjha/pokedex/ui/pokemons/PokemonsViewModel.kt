@@ -25,17 +25,24 @@ class PokemonsViewModel @Inject constructor(
         emitSource(pokemonDao.getPokemons())
     }
 
+    //Stores offsets called for paging
+    private val offsetList: ArrayList<Int> = arrayListOf()
+
     init {
         getPokemons()
     }
 
     fun clearPokemons() {
+        offsetList.clear()
         viewModelScope.launch(Dispatchers.IO) {
             pokemonDao.clearPokemons()
         }
     }
 
     fun getPokemons(offset: Int = Constants.DEFAULT_OFFSET) {
+        if (offsetList.contains(offset))
+            return
+        offsetList.add(offset)
         viewModelScope.launch(Dispatchers.IO) {
             pokeRepository.getPokemons(offset).collect {
                 _pokemonMain.postValue(it)
