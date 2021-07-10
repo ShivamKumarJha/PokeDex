@@ -3,7 +3,7 @@ package com.shivamkumarjha.pokedex.model
 import com.google.gson.annotations.SerializedName
 
 data class BlackWhite(
-    @SerializedName("animated") val animated: Animated,
+    @SerializedName("animated") val animated: Property,
     @SerializedName("back_default") val back_default: String,
     @SerializedName("back_female") val back_female: String,
     @SerializedName("back_shiny") val back_shiny: String,
