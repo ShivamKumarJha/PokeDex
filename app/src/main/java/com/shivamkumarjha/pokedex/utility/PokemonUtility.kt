@@ -8,6 +8,6 @@ object PokemonUtility {
         } else {
             apiPath.takeLastWhile { it.isDigit() }
         }
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${number}.png"
     }
 }
