@@ -4,7 +4,7 @@ object Constants {
     const val TAG = "PokeDex"
 
     //API
-    const val POKEAPI = "https://pokeapi.co/api/v2/"
+    const val API_POKE = "https://pokeapi.co/api/v2/"
 
     //Database
     const val DB_NAME = "pokedex.db"
