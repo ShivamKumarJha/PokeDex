@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">PokeDex</string>
-    <string name="error_occurred">Unknown error occurred.</string>
+    <string name="error_occurred">Error occurred. %1$s</string>
     <string name="user_offline">You are offline, please connect to internet.</string>
     <string name="jumpTop">Jump to top</string>
 </resources>

@@ -45,7 +45,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
                     }
                     Status.ERROR -> {
-                        requireContext().toast(it.message ?: getString(R.string.error_occurred))
+                        requireContext().toast(getString(R.string.error_occurred, it.message))
                     }
                     Status.LOADING -> {
 
