@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.card.MaterialCardView
 import com.shivamkumarjha.pokedex.databinding.ItemPokemonBinding
 import com.shivamkumarjha.pokedex.model.Result
+import com.shivamkumarjha.pokedex.utility.PokemonUtility
 
 class PokemonAdapter(private val clickListener: PokemonClickListener) :
     RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>() {
@@ -55,7 +56,7 @@ class PokemonAdapter(private val clickListener: PokemonClickListener) :
             }
             name.text = pokemon.name
             Glide.with(image.context)
-                .load(pokemon.url)
+                .load(PokemonUtility.getImageUrl(pokemon.url))
                 .placeholder(circularProgressDrawable)
                 .apply(RequestOptions.centerCropTransform())
                 .into(image)
