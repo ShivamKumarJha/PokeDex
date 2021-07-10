@@ -14,8 +14,11 @@ interface PokemonDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addPokemon(pokemon: Result)
 
-    @Query("SELECT * FROM pokemon ORDER BY url ASC")
+    @Query("SELECT * FROM pokemon")
     fun getPokemons(): LiveData<List<Result>>
+
+    @Query("DELETE FROM pokemon")
+    fun clearPokemons()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addPokemonDetail(pokemonDetails: PokemonDetails)

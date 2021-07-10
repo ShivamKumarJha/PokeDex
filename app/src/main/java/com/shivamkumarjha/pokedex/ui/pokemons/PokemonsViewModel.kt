@@ -29,6 +29,12 @@ class PokemonsViewModel @Inject constructor(
         getPokemons()
     }
 
+    fun clearPokemons() {
+        viewModelScope.launch(Dispatchers.IO) {
+            pokemonDao.clearPokemons()
+        }
+    }
+
     fun getPokemons(offset: Int = Constants.DEFAULT_OFFSET) {
         viewModelScope.launch(Dispatchers.IO) {
             pokeRepository.getPokemons(offset).collect {

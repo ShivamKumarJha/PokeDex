@@ -33,6 +33,11 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
     }
 
     private fun setViews() {
+        binding?.swipeRefresh?.setOnRefreshListener {
+            binding?.swipeRefresh?.isRefreshing = false
+            viewModel.clearPokemons()
+            viewModel.getPokemons()
+        }
         //Recycler view
         pokemonAdapter = PokemonAdapter(object : PokemonClickListener {
             override fun onCardClick(result: Result) {
