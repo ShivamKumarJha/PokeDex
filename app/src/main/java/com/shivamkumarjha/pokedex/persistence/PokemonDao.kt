@@ -5,17 +5,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.shivamkumarjha.pokedex.model.PokemonData
 import com.shivamkumarjha.pokedex.model.PokemonDetails
-import com.shivamkumarjha.pokedex.model.Result
 
 @Dao
 interface PokemonDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addPokemon(pokemon: Result)
+    fun addPokemon(pokemon: PokemonData)
 
-    @Query("SELECT * FROM pokemon")
-    fun getPokemons(): LiveData<List<Result>>
+    @Query("SELECT * FROM pokemon ORDER BY id ASC")
+    fun getPokemons(): LiveData<List<PokemonData>>
 
     @Query("DELETE FROM pokemon")
     fun clearPokemons()

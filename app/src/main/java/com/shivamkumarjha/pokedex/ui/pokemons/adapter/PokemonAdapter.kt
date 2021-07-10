@@ -18,13 +18,12 @@ import com.bumptech.glide.request.target.Target
 import com.google.android.material.card.MaterialCardView
 import com.shivamkumarjha.pokedex.R
 import com.shivamkumarjha.pokedex.databinding.ItemPokemonBinding
-import com.shivamkumarjha.pokedex.model.Result
-import com.shivamkumarjha.pokedex.utility.PokemonUtility
+import com.shivamkumarjha.pokedex.model.PokemonData
 
 class PokemonAdapter(private val clickListener: PokemonClickListener) :
     RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>() {
 
-    private var pokemons: List<Result> = arrayListOf()
+    private var pokemons: List<PokemonData> = arrayListOf()
 
     override fun getItemCount(): Int = pokemons.size
 
@@ -38,7 +37,7 @@ class PokemonAdapter(private val clickListener: PokemonClickListener) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setPokemons(pokemons: List<Result>) {
+    fun setPokemons(pokemons: List<PokemonData>) {
         this.pokemons = pokemons
         notifyDataSetChanged()
     }
@@ -57,7 +56,7 @@ class PokemonAdapter(private val clickListener: PokemonClickListener) :
             circularProgressDrawable.start()
         }
 
-        fun bind(pokemon: Result) {
+        fun bind(pokemon: PokemonData) {
             card.setOnClickListener {
                 clickListener.onCardClick(pokemon)
             }
@@ -65,7 +64,7 @@ class PokemonAdapter(private val clickListener: PokemonClickListener) :
 
             Glide.with(image.context)
                 .asBitmap()
-                .load(PokemonUtility.getImageUrl(pokemon.url))
+                .load(pokemon.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(circularProgressDrawable)
 

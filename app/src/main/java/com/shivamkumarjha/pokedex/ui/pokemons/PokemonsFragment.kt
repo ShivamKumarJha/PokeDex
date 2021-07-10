@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.shivamkumarjha.pokedex.R
 import com.shivamkumarjha.pokedex.databinding.FragmentPokemonsBinding
-import com.shivamkumarjha.pokedex.model.Result
+import com.shivamkumarjha.pokedex.model.PokemonData
 import com.shivamkumarjha.pokedex.network.Status
 import com.shivamkumarjha.pokedex.ui.extensions.toast
 import com.shivamkumarjha.pokedex.ui.pokemons.adapter.PokemonAdapter
@@ -40,8 +40,8 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
         }
         //Recycler view
         pokemonAdapter = PokemonAdapter(object : PokemonClickListener {
-            override fun onCardClick(result: Result) {
-                requireContext().toast(result.name)
+            override fun onCardClick(pokemonData: PokemonData) {
+                requireContext().toast(pokemonData.name)
             }
         })
         recyclerView = binding!!.recyclerView

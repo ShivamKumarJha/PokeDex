@@ -8,6 +8,7 @@ import com.shivamkumarjha.pokedex.network.ApiPoke
 import com.shivamkumarjha.pokedex.network.NoConnectivityException
 import com.shivamkumarjha.pokedex.network.Resource
 import com.shivamkumarjha.pokedex.persistence.PokemonDao
+import com.shivamkumarjha.pokedex.utility.PokemonUtility
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,7 +27,8 @@ class PokeRepositoryImpl(
                 val data = response.body()
                 emit(Resource.success(data = data))
                 //Save to database
-                data?.results?.forEach { pokemon ->
+                data?.results?.forEach { result ->
+                    val pokemon = PokemonUtility.getPokemonData(result)
                     pokemonDao.addPokemon(pokemon)
                 }
                 Log.d(Constants.TAG, response.body().toString())

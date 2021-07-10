@@ -3,13 +3,13 @@ package com.shivamkumarjha.pokedex.persistence
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.shivamkumarjha.pokedex.model.PokemonData
 import com.shivamkumarjha.pokedex.model.PokemonDetails
-import com.shivamkumarjha.pokedex.model.Result
 
 @Database(
     entities = [
         PokemonDetails::class,
-        Result::class,
+        PokemonData::class,
     ],
     version = 1
 )

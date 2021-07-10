@@ -1,7 +1,7 @@
 package com.shivamkumarjha.pokedex.ui.pokemons.adapter
 
-import com.shivamkumarjha.pokedex.model.Result
+import com.shivamkumarjha.pokedex.model.PokemonData
 
 interface PokemonClickListener {
-    fun onCardClick(result: Result)
+    fun onCardClick(pokemonData: PokemonData)
 }
