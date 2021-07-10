@@ -47,11 +47,11 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
     }
 
     private fun observer() {
-        viewModel.pokemons.observe(viewLifecycleOwner, {
+        viewModel.pokemonMain.observe(viewLifecycleOwner, {
             if (it != null) {
                 when (it.status) {
                     Status.SUCCESS -> {
-                        pokemonAdapter.setPokemons(it.data?.results ?: arrayListOf())
+
                     }
                     Status.ERROR -> {
                         requireContext().toast(it.message ?: getString(R.string.error_occurred))
@@ -64,6 +64,11 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
                     }
                 }
                 binding?.progressbar?.isVisible = it.status == Status.LOADING
+            }
+        })
+        viewModel.pokemons.observe(viewLifecycleOwner, {
+            it?.let { pokemons ->
+                pokemonAdapter.setPokemons(pokemons)
             }
         })
     }

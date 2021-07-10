@@ -7,19 +7,28 @@ import com.shivamkumarjha.pokedex.model.PokemonMain
 import com.shivamkumarjha.pokedex.network.ApiPoke
 import com.shivamkumarjha.pokedex.network.NoConnectivityException
 import com.shivamkumarjha.pokedex.network.Resource
+import com.shivamkumarjha.pokedex.persistence.PokemonDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class PokeRepositoryImpl(private val apiPoke: ApiPoke) : PokeRepository {
+class PokeRepositoryImpl(
+    private val apiPoke: ApiPoke,
+    private val pokemonDao: PokemonDao
+) : PokeRepository {
 
     override suspend fun getPokemons(offset: Int): Flow<Resource<PokemonMain?>> = flow {
         emit(Resource.loading(data = null))
         try {
             val response = apiPoke.getPokemons(offset)
             if (response.isSuccessful) {
-                emit(Resource.success(data = response.body()))
+                val data = response.body()
+                emit(Resource.success(data = data))
+                //Save to database
+                data?.results?.forEach { pokemon ->
+                    pokemonDao.addPokemon(pokemon)
+                }
                 Log.d(Constants.TAG, response.body().toString())
             } else {
                 emit(Resource.error(data = null, message = response.code().toString()))
@@ -40,7 +49,12 @@ class PokeRepositoryImpl(private val apiPoke: ApiPoke) : PokeRepository {
         try {
             val response = apiPoke.getPokemonDetails(id)
             if (response.isSuccessful) {
-                emit(Resource.success(data = response.body()))
+                val data = response.body()
+                emit(Resource.success(data = data))
+                //Save to database
+                data?.let { pokemonDetails ->
+                    pokemonDao.addPokemonDetail(pokemonDetails)
+                }
                 Log.d(Constants.TAG, response.body().toString())
             } else {
                 emit(Resource.error(data = null, message = response.code().toString()))
