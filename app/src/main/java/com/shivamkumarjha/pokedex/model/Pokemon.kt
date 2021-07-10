@@ -6,5 +6,5 @@ data class Pokemon(
     @SerializedName("count") val count: Int,
     @SerializedName("next") val next: String,
     @SerializedName("previous") val previous: String,
-    @SerializedName("results") val results: ArrayList<Results>
+    @SerializedName("results") val results: ArrayList<Result>
 )
