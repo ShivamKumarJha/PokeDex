@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.shivamkumarjha.pokedex.R
 import com.shivamkumarjha.pokedex.databinding.FragmentPokemonsBinding
@@ -41,7 +42,9 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
         //Recycler view
         pokemonAdapter = PokemonAdapter(object : PokemonClickListener {
             override fun onCardClick(pokemonData: PokemonData) {
-                requireContext().toast(pokemonData.name)
+                val action =
+                    PokemonsFragmentDirections.actionPokemonsFragmentToDetailsFragment(pokemonData.id)
+                findNavController().navigate(action)
             }
         })
         recyclerView = binding!!.recyclerView
