@@ -56,7 +56,16 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
                     viewModel.getPokemons(pokemonAdapter.itemCount)
                 }
             }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                binding?.scrollTopCard?.isVisible = dy > 0
+            }
         })
+        binding?.scrollTopCard?.setOnClickListener {
+            binding?.scrollTopCard?.isVisible = false
+            recyclerView.smoothScrollToPosition(0)
+        }
     }
 
     private fun observer() {
