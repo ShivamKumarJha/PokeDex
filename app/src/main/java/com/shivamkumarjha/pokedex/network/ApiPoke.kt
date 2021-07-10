@@ -1,5 +1,6 @@
 package com.shivamkumarjha.pokedex.network
 
+import com.shivamkumarjha.pokedex.config.Constants
 import com.shivamkumarjha.pokedex.model.PokemonDetails
 import com.shivamkumarjha.pokedex.model.PokemonMain
 import retrofit2.Response
@@ -11,12 +12,12 @@ interface ApiPoke {
 
     @GET("pokemon")
     suspend fun getPokemons(
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int = Constants.PAGING_LIMIT,
     ): Response<PokemonMain>
 
-    @GET("pokemon/{name}")
+    @GET("pokemon/{id}")
     suspend fun getPokemonDetails(
-        @Path("name") name: String
+        @Path("id") id: Int
     ): Response<PokemonDetails>
 }
