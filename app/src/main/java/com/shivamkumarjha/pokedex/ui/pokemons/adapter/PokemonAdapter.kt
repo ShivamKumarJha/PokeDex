@@ -1,15 +1,22 @@
 package com.shivamkumarjha.pokedex.ui.pokemons.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.material.card.MaterialCardView
+import com.shivamkumarjha.pokedex.R
 import com.shivamkumarjha.pokedex.databinding.ItemPokemonBinding
 import com.shivamkumarjha.pokedex.model.Result
 import com.shivamkumarjha.pokedex.utility.PokemonUtility
@@ -55,10 +62,40 @@ class PokemonAdapter(private val clickListener: PokemonClickListener) :
                 clickListener.onCardClick(pokemon)
             }
             name.text = pokemon.name
+
             Glide.with(image.context)
+                .asBitmap()
                 .load(PokemonUtility.getImageUrl(pokemon.url))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(circularProgressDrawable)
-                .apply(RequestOptions.centerCropTransform())
+
+                .listener(object : RequestListener<Bitmap?> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Bitmap?>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        circularProgressDrawable.stop()
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Bitmap?,
+                        model: Any?,
+                        target: Target<Bitmap?>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        if (resource != null) {
+                            val palette: Palette = Palette.from(resource).generate()
+                            card.setCardBackgroundColor(
+                                palette.getDominantColor(image.context.getColor(R.color.white))
+                            )
+                        }
+                        return false
+                    }
+                })
                 .into(image)
         }
     }
