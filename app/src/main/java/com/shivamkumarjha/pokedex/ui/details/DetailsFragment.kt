@@ -87,6 +87,16 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     (pokemonDetails.weight.toFloat() / 10).toString()
                 )
 
+                for (stat in pokemonDetails.stats) {
+                    when (stat.stat.name) {
+                        "hp" -> binding?.progressHp?.progress = stat.base_stat
+                        "attack" -> binding?.attackHp?.progress = stat.base_stat
+                        "defense" -> binding?.defenseHp?.progress = stat.base_stat
+                        "speed" -> binding?.speedHp?.progress = stat.base_stat
+                        "special-attack" -> binding?.expHp?.progress = stat.base_stat
+                    }
+                }
+
                 slidesAdapter = SlidesAdapter(PokemonUtility.populateImages(pokemonDetails))
                 binding?.slidesViewPager?.adapter = slidesAdapter
 
