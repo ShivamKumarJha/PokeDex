@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shivamkumarjha.pokedex.R
-import com.shivamkumarjha.pokedex.databinding.DialogFilterBinding
+import com.shivamkumarjha.pokedex.databinding.DialogSortBinding
 import com.shivamkumarjha.pokedex.databinding.FragmentPokemonsBinding
 import com.shivamkumarjha.pokedex.model.PokemonData
 import com.shivamkumarjha.pokedex.network.Status
@@ -80,8 +80,8 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
             viewModel.clearPokemons()
             viewModel.getPokemons()
         }
-        binding?.fabFilter?.setOnClickListener {
-            filterDialog()
+        binding?.fabSort?.setOnClickListener {
+            sortDialog()
         }
         //Recycler view
         pokemonAdapter = PokemonAdapter(object : PokemonClickListener {
@@ -141,25 +141,25 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
         listObserver()
     }
 
-    private fun listObserver(filter: Int = preferenceManager.filter) {
-        viewModel.pokemons(filter).observe(viewLifecycleOwner, {
+    private fun listObserver(sort: Int = preferenceManager.sort) {
+        viewModel.pokemons(sort).observe(viewLifecycleOwner, {
             it?.let { pokemons ->
                 pokemonAdapter.setPokemons(pokemons)
             }
         })
     }
 
-    private fun filterDialog() {
+    private fun sortDialog() {
         val dialog = Dialog(requireContext())
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)
         val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
         dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val dialogBinding = DialogFilterBinding.inflate(layoutInflater)
+        val dialogBinding = DialogSortBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
-        when (preferenceManager.filter) {
+        when (preferenceManager.sort) {
             0 -> dialogBinding.radioGroup.check(R.id.radioIdAsc)
             1 -> dialogBinding.radioGroup.check(R.id.radioIdDesc)
             2 -> dialogBinding.radioGroup.check(R.id.radioNameAsc)
@@ -167,12 +167,12 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
         }
         dialogBinding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.radioIdAsc -> preferenceManager.filter = 0
-                R.id.radioIdDesc -> preferenceManager.filter = 1
-                R.id.radioNameAsc -> preferenceManager.filter = 2
-                R.id.radioNameDesc -> preferenceManager.filter = 3
+                R.id.radioIdAsc -> preferenceManager.sort = 0
+                R.id.radioIdDesc -> preferenceManager.sort = 1
+                R.id.radioNameAsc -> preferenceManager.sort = 2
+                R.id.radioNameDesc -> preferenceManager.sort = 3
             }
-            listObserver(preferenceManager.filter)
+            listObserver(preferenceManager.sort)
             dialog.dismiss()
         }
 

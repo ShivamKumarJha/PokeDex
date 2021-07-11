@@ -21,8 +21,8 @@ class PokemonsViewModel @Inject constructor(
     private val _pokemonMain = MutableLiveData<Resource<PokemonMain?>>()
     val pokemonMain: LiveData<Resource<PokemonMain?>> = _pokemonMain
 
-    fun pokemons(filter: Int) = liveData(Dispatchers.IO) {
-        when (filter) {
+    fun pokemons(sort: Int) = liveData(Dispatchers.IO) {
+        when (sort) {
             0 -> emitSource(pokemonDao.getPokemonsIdAsc())
             1 -> emitSource(pokemonDao.getPokemonsIdDesc())
             2 -> emitSource(pokemonDao.getPokemonsNameAsc())

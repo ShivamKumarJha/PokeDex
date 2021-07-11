@@ -3,7 +3,7 @@
     <string name="error_occurred">Error occurred. %1$s</string>
     <string name="user_offline">You are offline, please connect to internet.</string>
     <string name="jumpTop">Jump to top</string>
-    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
     <string name="by_id_asc">By number ascending</string>
     <string name="by_id_desc">By number descending</string>
     <string name="by_name_asc">By name ascending</string>

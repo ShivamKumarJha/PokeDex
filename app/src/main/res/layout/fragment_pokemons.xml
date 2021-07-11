@@ -80,7 +80,7 @@
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabFilter"
+        android:id="@+id/fabSort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
