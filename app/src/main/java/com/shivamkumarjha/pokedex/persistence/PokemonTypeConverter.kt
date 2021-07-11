@@ -146,5 +146,19 @@ class PokemonTypeConverter {
             val type = object : TypeToken<List<HeldDetails>>() {}.type
             return Gson().toJson(heldDetails, type)
         }
+
+        @TypeConverter
+        @JvmStatic
+        fun stringToPastTypes(pastTypes: String): List<PastTypes> {
+            val type = object : TypeToken<List<PastTypes>>() {}.type
+            return Gson().fromJson(pastTypes, type)
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun pastTypesToJson(pastTypes: List<PastTypes>): String {
+            val type = object : TypeToken<List<PastTypes>>() {}.type
+            return Gson().toJson(pastTypes, type)
+        }
     }
 }

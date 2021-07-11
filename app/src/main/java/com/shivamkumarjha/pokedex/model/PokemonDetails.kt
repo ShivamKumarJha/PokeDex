@@ -18,7 +18,7 @@ data class PokemonDetails(
     @SerializedName("moves") val moves: List<Moves>,
     @SerializedName("name") val name: String,
     @SerializedName("order") val order: Int,
-    @SerializedName("past_types") val past_types: List<String>,
+    @SerializedName("past_types") val past_types: List<PastTypes>,
     @SerializedName("species") val species: Result,
     @SerializedName("sprites") val sprites: Sprites,
     @SerializedName("stats") val stats: List<Stats>,
