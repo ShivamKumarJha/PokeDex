@@ -1,7 +1,11 @@
 package com.shivamkumarjha.pokedex.ui.pokemons
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -11,6 +15,7 @@ import com.shivamkumarjha.pokedex.R
 import com.shivamkumarjha.pokedex.databinding.FragmentPokemonsBinding
 import com.shivamkumarjha.pokedex.model.PokemonData
 import com.shivamkumarjha.pokedex.network.Status
+import com.shivamkumarjha.pokedex.ui.extensions.getColorById
 import com.shivamkumarjha.pokedex.ui.extensions.toast
 import com.shivamkumarjha.pokedex.ui.pokemons.adapter.PokemonAdapter
 import com.shivamkumarjha.pokedex.ui.pokemons.adapter.PokemonClickListener
@@ -30,6 +35,7 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
         super.onViewCreated(view, savedState)
         binding = FragmentPokemonsBinding.bind(view)
         setViews()
+        searchPokemons()
         observer()
     }
 
@@ -94,6 +100,28 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
         viewModel.pokemons.observe(viewLifecycleOwner, {
             it?.let { pokemons ->
                 pokemonAdapter.setPokemons(pokemons)
+            }
+        })
+    }
+
+    private fun searchPokemons() {
+        val searchView = binding!!.searchView
+        val searchIcon = searchView.findViewById<ImageView>(R.id.search_mag_icon)
+        searchIcon.setColorFilter(Color.WHITE)
+        val cancelIcon = searchView.findViewById<ImageView>(R.id.search_close_btn)
+        cancelIcon.setColorFilter(Color.WHITE)
+        val searchTextView = searchView.findViewById<TextView>(R.id.search_src_text)
+        searchTextView.setTextColor(Color.WHITE)
+        searchTextView.hint = resources.getString(R.string.search_pokemons)
+        searchTextView.setHintTextColor(requireContext().getColorById(R.color.grey_200))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                pokemonAdapter.filter.filter(newText)
+                return false
             }
         })
     }

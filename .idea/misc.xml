@@ -8,12 +8,14 @@
         <entry key="app/src/main/res/drawable/tab_selected.xml" value="0.21927083333333333" />
         <entry key="app/src/main/res/drawable/tab_selector.xml" value="0.21927083333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/content_fragments.xml" value="0.203125" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/fragment_pokemons.xml" value="0.15" />
         <entry key="app/src/main/res/layout/item_pokemon.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/item_slide.xml" value="0.203125" />
         <entry key="app/src/main/res/layout/item_types.xml" value="0.203125" />
         <entry key="app/src/main/res/layout/toolbar_home.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/menu/main_menu.xml" value="0.203125" />
       </map>
     </option>
   </component>

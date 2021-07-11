@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.palette.graphics.Palette
@@ -21,9 +23,10 @@ import com.shivamkumarjha.pokedex.databinding.ItemPokemonBinding
 import com.shivamkumarjha.pokedex.model.PokemonData
 
 class PokemonAdapter(private val clickListener: PokemonClickListener) :
-    RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>() {
+    RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>(), Filterable {
 
-    private var pokemons: List<PokemonData> = arrayListOf()
+    private var pokemons: ArrayList<PokemonData> = arrayListOf()
+    private var backupList = pokemons
 
     override fun getItemCount(): Int = pokemons.size
 
@@ -38,7 +41,8 @@ class PokemonAdapter(private val clickListener: PokemonClickListener) :
 
     @SuppressLint("NotifyDataSetChanged")
     fun setPokemons(pokemons: List<PokemonData>) {
-        this.pokemons = pokemons
+        this.pokemons = pokemons as ArrayList<PokemonData>
+        backupList = this.pokemons
         notifyDataSetChanged()
     }
 
@@ -96,6 +100,37 @@ class PokemonAdapter(private val clickListener: PokemonClickListener) :
                     }
                 })
                 .into(image)
+        }
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+
+            override fun performFiltering(charSequence: CharSequence?): FilterResults {
+                var filteredList: ArrayList<PokemonData> = arrayListOf()
+                if (charSequence.toString().isEmpty()) {
+                    filteredList = backupList
+                } else {
+                    for (pokemon in pokemons) {
+                        if (pokemon.name.contains(charSequence.toString(), ignoreCase = true)) {
+                            filteredList.add(pokemon)
+                        }
+                    }
+                }
+                val filterResults = FilterResults()
+                filterResults.values = filteredList
+                return filterResults
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(
+                charSequence: CharSequence?,
+                filterResults: FilterResults?
+            ) {
+                pokemons = filterResults?.values as ArrayList<PokemonData>
+                notifyDataSetChanged()
+            }
         }
     }
 }
