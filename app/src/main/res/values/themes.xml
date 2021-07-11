@@ -20,11 +20,4 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
-
-    <style name="ShapeAppearanceOverlay.CardView" parent="">
-        <item name="cornerFamilyBottomLeft">rounded</item>
-        <item name="cornerFamilyBottomRight">rounded</item>
-        <item name="cornerSizeBottomLeft">20%</item>
-        <item name="cornerSizeBottomRight">20%</item>
-    </style>
 </resources>
