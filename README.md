@@ -91,7 +91,7 @@ For more resources on learning Android development, visit the
 
 Support
 -------
-If you've found an error in this repo, please file an [issue](https://github.com/ShivamKumarJha/android_nasa_pictures/issues).
+If you've found an error in this repo, please file an [issue](https://github.com/ShivamKumarJha/PokeDex/issues).
 
 Patches are encouraged, and may be submitted by making changes in a new branch 
 and submitting a pull request through GitHub.
