@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shivamkumarjha.pokedex.R
 import com.shivamkumarjha.pokedex.databinding.FragmentPokemonsBinding
@@ -82,9 +83,11 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
             }
         })
         recyclerView = binding!!.recyclerView
+        val mLayoutManager = GridLayoutManager(requireContext(), 2)
         recyclerView.apply {
             setHasFixedSize(true)
             adapter = pokemonAdapter
+            layoutManager = mLayoutManager
         }
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -96,11 +99,10 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                binding?.scrollTopCard?.isVisible = dy > 0
+                binding?.fabScroll?.isVisible = mLayoutManager.findFirstVisibleItemPosition() > 0
             }
         })
-        binding?.scrollTopCard?.setOnClickListener {
-            binding?.scrollTopCard?.isVisible = false
+        binding?.fabScroll?.setOnClickListener {
             recyclerView.smoothScrollToPosition(0)
         }
     }
