@@ -1,11 +1,13 @@
 package com.shivamkumarjha.pokedex.ui.pokemons
 
-import android.graphics.Color
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +17,6 @@ import com.shivamkumarjha.pokedex.R
 import com.shivamkumarjha.pokedex.databinding.FragmentPokemonsBinding
 import com.shivamkumarjha.pokedex.model.PokemonData
 import com.shivamkumarjha.pokedex.network.Status
-import com.shivamkumarjha.pokedex.ui.extensions.getColorById
 import com.shivamkumarjha.pokedex.ui.extensions.toast
 import com.shivamkumarjha.pokedex.ui.pokemons.adapter.PokemonAdapter
 import com.shivamkumarjha.pokedex.ui.pokemons.adapter.PokemonClickListener
@@ -25,21 +26,48 @@ import dagger.hilt.android.AndroidEntryPoint
 class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
     //Views
     private var binding: FragmentPokemonsBinding? = null
+    private lateinit var toolbar: Toolbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var pokemonAdapter: PokemonAdapter
 
     //ViewModel
     private val viewModel: PokemonsViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.main_menu, menu)
+
+        // SearchView
+        val searchItem: MenuItem = menu.findItem(R.id.list_search_id)
+        val searchView: SearchView = searchItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                pokemonAdapter.filter.filter(newText)
+                return false
+            }
+        })
+    }
+
     override fun onViewCreated(view: View, savedState: Bundle?) {
         super.onViewCreated(view, savedState)
         binding = FragmentPokemonsBinding.bind(view)
         setViews()
-        searchPokemons()
         observer()
     }
 
     private fun setViews() {
+        toolbar = binding!!.toolbar
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+
         binding?.swipeRefresh?.setOnRefreshListener {
             binding?.swipeRefresh?.isRefreshing = false
             viewModel.clearPokemons()
@@ -100,28 +128,6 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
         viewModel.pokemons.observe(viewLifecycleOwner, {
             it?.let { pokemons ->
                 pokemonAdapter.setPokemons(pokemons)
-            }
-        })
-    }
-
-    private fun searchPokemons() {
-        val searchView = binding!!.searchView
-        val searchIcon = searchView.findViewById<ImageView>(R.id.search_mag_icon)
-        searchIcon.setColorFilter(Color.WHITE)
-        val cancelIcon = searchView.findViewById<ImageView>(R.id.search_close_btn)
-        cancelIcon.setColorFilter(Color.WHITE)
-        val searchTextView = searchView.findViewById<TextView>(R.id.search_src_text)
-        searchTextView.setTextColor(Color.WHITE)
-        searchTextView.hint = resources.getString(R.string.search_pokemons)
-        searchTextView.setHintTextColor(requireContext().getColorById(R.color.grey_200))
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                pokemonAdapter.filter.filter(newText)
-                return false
             }
         })
     }
