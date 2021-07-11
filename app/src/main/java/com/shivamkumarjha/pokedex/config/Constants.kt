@@ -13,4 +13,5 @@ object Constants {
 
     //Preferences
     const val PREF_NAME = "preferences"
+    const val PREF_FILTER = "filter"
 }

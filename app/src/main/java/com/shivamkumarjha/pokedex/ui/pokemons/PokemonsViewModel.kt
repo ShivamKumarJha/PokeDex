@@ -21,8 +21,13 @@ class PokemonsViewModel @Inject constructor(
     private val _pokemonMain = MutableLiveData<Resource<PokemonMain?>>()
     val pokemonMain: LiveData<Resource<PokemonMain?>> = _pokemonMain
 
-    val pokemons = liveData(Dispatchers.IO) {
-        emitSource(pokemonDao.getPokemons())
+    fun pokemons(filter: Int) = liveData(Dispatchers.IO) {
+        when (filter) {
+            0 -> emitSource(pokemonDao.getPokemonsIdAsc())
+            1 -> emitSource(pokemonDao.getPokemonsIdDesc())
+            2 -> emitSource(pokemonDao.getPokemonsNameAsc())
+            3 -> emitSource(pokemonDao.getPokemonsNameDesc())
+        }
     }
 
     //Stores offsets called for paging

@@ -15,7 +15,16 @@ interface PokemonDao {
     fun addPokemon(pokemon: PokemonData)
 
     @Query("SELECT * FROM pokemon ORDER BY id ASC")
-    fun getPokemons(): LiveData<List<PokemonData>>
+    fun getPokemonsIdAsc(): LiveData<List<PokemonData>>
+
+    @Query("SELECT * FROM pokemon ORDER BY id DESC")
+    fun getPokemonsIdDesc(): LiveData<List<PokemonData>>
+
+    @Query("SELECT * FROM pokemon ORDER BY name ASC")
+    fun getPokemonsNameAsc(): LiveData<List<PokemonData>>
+
+    @Query("SELECT * FROM pokemon ORDER BY name DESC")
+    fun getPokemonsNameDesc(): LiveData<List<PokemonData>>
 
     @Query("DELETE FROM pokemon")
     fun clearPokemons()

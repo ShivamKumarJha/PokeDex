@@ -1,10 +1,10 @@
 package com.shivamkumarjha.pokedex.ui.pokemons
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -15,13 +15,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shivamkumarjha.pokedex.R
+import com.shivamkumarjha.pokedex.databinding.DialogFilterBinding
 import com.shivamkumarjha.pokedex.databinding.FragmentPokemonsBinding
 import com.shivamkumarjha.pokedex.model.PokemonData
 import com.shivamkumarjha.pokedex.network.Status
+import com.shivamkumarjha.pokedex.persistence.PreferenceManager
 import com.shivamkumarjha.pokedex.ui.extensions.toast
 import com.shivamkumarjha.pokedex.ui.pokemons.adapter.PokemonAdapter
 import com.shivamkumarjha.pokedex.ui.pokemons.adapter.PokemonClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
@@ -33,6 +36,9 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
 
     //ViewModel
     private val viewModel: PokemonsViewModel by viewModels()
+
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +80,9 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
             viewModel.clearPokemons()
             viewModel.getPokemons()
         }
+        binding?.fabFilter?.setOnClickListener {
+            filterDialog()
+        }
         //Recycler view
         pokemonAdapter = PokemonAdapter(object : PokemonClickListener {
             override fun onCardClick(pokemonData: PokemonData) {
@@ -82,6 +91,8 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
                 findNavController().navigate(action)
             }
         })
+        pokemonAdapter.stateRestorationPolicy =
+            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         recyclerView = binding!!.recyclerView
         val mLayoutManager = GridLayoutManager(requireContext(), 2)
         recyclerView.apply {
@@ -127,11 +138,45 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
                 binding?.progressbar?.isVisible = it.status == Status.LOADING
             }
         })
-        viewModel.pokemons.observe(viewLifecycleOwner, {
+        listObserver()
+    }
+
+    private fun listObserver(filter: Int = preferenceManager.filter) {
+        viewModel.pokemons(filter).observe(viewLifecycleOwner, {
             it?.let { pokemons ->
                 pokemonAdapter.setPokemons(pokemons)
             }
         })
+    }
+
+    private fun filterDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
+        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val dialogBinding = DialogFilterBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        when (preferenceManager.filter) {
+            0 -> dialogBinding.radioGroup.check(R.id.radioIdAsc)
+            1 -> dialogBinding.radioGroup.check(R.id.radioIdDesc)
+            2 -> dialogBinding.radioGroup.check(R.id.radioNameAsc)
+            3 -> dialogBinding.radioGroup.check(R.id.radioNameDesc)
+        }
+        dialogBinding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radioIdAsc -> preferenceManager.filter = 0
+                R.id.radioIdDesc -> preferenceManager.filter = 1
+                R.id.radioNameAsc -> preferenceManager.filter = 2
+                R.id.radioNameDesc -> preferenceManager.filter = 3
+            }
+            listObserver(preferenceManager.filter)
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     override fun onDestroyView() {
