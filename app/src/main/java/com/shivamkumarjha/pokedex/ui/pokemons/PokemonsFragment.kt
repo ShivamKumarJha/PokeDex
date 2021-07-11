@@ -151,8 +151,8 @@ class PokemonsFragment : Fragment(R.layout.fragment_pokemons) {
 
     private fun filterDialog() {
         val dialog = Dialog(requireContext())
-        dialog.setCancelable(false)
-        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
         val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
         dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
