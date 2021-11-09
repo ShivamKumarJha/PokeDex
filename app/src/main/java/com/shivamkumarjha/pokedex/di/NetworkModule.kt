@@ -2,7 +2,6 @@ package com.shivamkumarjha.pokedex.di
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -76,9 +75,6 @@ class NetworkModule {
         client.readTimeout(5, TimeUnit.MINUTES)
         client.addInterceptor(httpInterceptor)
         client.addInterceptor(logging)
-        if (BuildConfig.DEBUG) {
-            client.addNetworkInterceptor(StethoInterceptor())
-        }
         client.cache(cache)
         client.retryOnConnectionFailure(true)
         client.connectionPool(ConnectionPool(0, 1, TimeUnit.NANOSECONDS))
